@@ -1,0 +1,19 @@
+{
+  :id => :stac_mix_simple_sinatra,
+  :description => "tiny test mix with 1 user / scenario",
+
+  :test_mix =>
+  [
+    {
+      :scn_mix => [ &USR_SCN_simple_sinatra(:stac_app_sinatra) ], 
+      :count => 1,
+      :scn_var => 
+      { 
+        :think_time => 8,
+        :end_user_count => 50,
+        :usr_duration => INFINITY
+      } 
+    }
+  ]
+}
+

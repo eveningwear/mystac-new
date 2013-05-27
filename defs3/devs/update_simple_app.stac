@@ -1,0 +1,10 @@
+{
+    :id => :stac_dev_update_simple_app,
+    :description => "updates a basic app with new bits",
+
+    :dev_actions => [
+                  { :dev_action => :VMC_UPD_APP, :args => { :app_name => &APPNAME,
+                                                            :app_def  => &APPDEF } }
+                ]
+}
+

@@ -1,0 +1,3 @@
+ruby stac2.rb --url www.baidu.com --end-user 100 --think-time 4 -m 30
+ruby stac2.rb -rtiny_test api.vcap.me --ac_admin_user=dev@cloudfoundry.org --ac_admin_pass=goodluck
+ruby stac2.rb -rtiny_test api.vcap.me --ac_admin_user=dev@cloudfoundry.org --ac_admin_pass=goodluck -m 60

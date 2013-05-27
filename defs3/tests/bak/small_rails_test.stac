@@ -1,0 +1,26 @@
+{
+  :id => :stac_mix_small_rails,
+  :description => "very small test mix with a couple of users using stac_app_rails",
+
+  :test_mixes =>
+  [
+    {
+      :count => 10,
+      :test_mix =>
+      [
+        { :fraction  => 60, :scn_mix => [ &USR_SCN_spiked_app(:stac_app_rails) ] },
+        { :fraction  => 40, :scn_mix => [ &USR_SCN_steady_growth(:stac_app_rails) ] },
+      ]
+    },
+
+    {
+      :count => 10,
+      :test_mix =>
+      [
+        { :fraction  => 80, :scn_mix => [ &USR_SCN_short_life(:stac_app_rails) ] },
+        { :fraction  => 20, :scn_mix => [ &USR_SCN_spiked_app(:stac_app_rails)] }
+      ]
+    },
+  ]
+}
+

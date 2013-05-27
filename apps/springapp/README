@@ -1,0 +1,4 @@
+To build:
+$ mvn clean package
+
+Resulting war file is located in target directory.

@@ -1,0 +1,11 @@
+{
+    :id => :stac_dev_del_services,
+    :description => "remove services from an app",
+
+    :dev_actions =>
+    [
+      { :dev_action => :VMC_DEL_SVC, :args => { :app_name => &APPNAME,
+                                                :services => &SERVICES } }
+    ]
+}
+

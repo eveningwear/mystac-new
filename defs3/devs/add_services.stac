@@ -1,0 +1,11 @@
+{
+    :id => :stac_dev_add_services,
+    :description => "add services to an app",
+
+    :dev_actions =>
+    [
+      { :dev_action => :VMC_ADD_SVC, :args => { :app_name => &APPNAME,
+                                                :services => &SERVICES } }
+    ]
+}
+

@@ -1,0 +1,6 @@
+{
+    :id => :stac_usr_db_init,
+    :description => "issue request to a DB app to initialize",
+
+    :usr_actions => [ { :usr_action => :http_get, :url => "/db/init"  } ]
+}

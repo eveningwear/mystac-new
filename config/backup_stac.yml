@@ -1,0 +1,12 @@
+---
+status_port: 8088
+log_level: INFO
+thread_count: 16
+log_file: /tmp/stac.log
+pid: /tmp/stac.pid
+http_log_dir: /tmp/stac_logs
+clock_jitter: 20
+update_freq: 10
+def_dirs: [ "defs/apps", "defs/devs", "defs/uses", "defs/scns", "defs/tests" ]
+ac_admin_user: "foobar@vmware.com"
+ac_admin_pass: "vmw@re"

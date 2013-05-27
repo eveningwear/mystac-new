@@ -1,0 +1,12 @@
+{
+  :id => :stac_mix_single_heavy_use_test,
+  :description => "1 ISV that gets slashdotted",
+
+  :test_mixes =>
+  [
+    {
+      :count => 1, :test_mix => [ { :scn_mix => [ &USR_SCN_heavy_use(:stac_app_sinatra) ] } ]
+    }
+  ]
+}
+

@@ -1,0 +1,3 @@
+-pull more vmc paramters into load_spec wrapper.
+-trap SIGINT to ensure cleanup happens cleanly.
+-make app used by load configurable.

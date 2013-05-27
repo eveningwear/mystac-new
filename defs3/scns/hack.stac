@@ -1,0 +1,64 @@
+{
+  :id => :stac_scn_hack,
+  :description => "whatever",
+
+  :scn_actions =>
+  [
+    # set defaults for the application name and definition
+    { :act_id => :stac_inf_def_state, :var => &APPNAME, :val => "abandoned_app" },
+    { :act_id => :stac_inf_def_state, :var => &APPDEF , :val => :stac_app_sinatra },
+
+    # Push an app
+    { :act_id => :stac_dev_push_basic_app,    :app_def  => &APPDEF,
+                                        :app_name => &APPNAME },
+
+    # App should be running happily
+    { :act_id => :stac_dev_check_health,      :app_name => &APPNAME },
+
+    # App should respond to HTTP user requests
+    { :act_id => :stac_usr_simple_sinatra,    :app_name => &APPNAME, :http_load => 10,
+                                                               :duration => -5 },
+
+    # Update the app to bits that don't work
+    { :act_id => :stac_dev_update_simple_app, :app_name => &APPNAME, :app_def => :stac_app_crashes_fast,
+                                        :duration => 25 },
+
+    # App should not be running
+    { :act_id => :stac_dev_check_health,      :app_name => &APPNAME },
+
+    # App should not respond to HTTP user requests
+    { :act_id => :stac_usr_simple_sinatra,    :app_name => &APPNAME, :http_load => 10,
+                                                               :duration => -5 },
+
+    # Update the app back to correctly working bits
+    { :act_id => :stac_dev_update_simple_app, :app_name => &APPNAME, :app_def => &APPDEF,
+                                        :duration => 1 },
+
+    # App should be running happily
+    { :act_id => :stac_dev_check_health,      :app_name => &APPNAME },
+
+    # App should respond to HTTP user requests
+    { :act_id => :stac_usr_simple_sinatra,    :app_name => &APPNAME, :http_load => 10,
+                                                               :duration => -5 },
+
+    # Tell the app to commit suicide
+    { :act_id => :stac_usr_crash_one_app,     :app_name => &APPNAME, :duration => 1 },
+
+    # App should not be running
+    { :act_id => :stac_dev_check_health,      :app_name => &APPNAME, :duration => 1  },
+    { :act_id => :stac_dev_check_health,      :app_name => &APPNAME, :duration => 1  },
+    { :act_id => :stac_dev_check_health,      :app_name => &APPNAME, :duration => 1  },
+    { :act_id => :stac_dev_check_health,      :app_name => &APPNAME, :duration => 1  },
+    { :act_id => :stac_dev_check_health,      :app_name => &APPNAME, :duration => 1  },
+    { :act_id => :stac_dev_check_health,      :app_name => &APPNAME, :duration => 1  },
+    { :act_id => :stac_dev_check_health,      :app_name => &APPNAME, :duration => 1  },
+
+    # App should not respond to HTTP user requests
+    { :act_id => :stac_usr_simple_sinatra,    :app_name => &APPNAME, :http_load => 10,
+                                                               :duration => -5 },
+
+    # Put the poor thing out of its misery
+    { :act_id => :stac_dev_del_app,           :app_name => &APPNAME }
+  ]
+}
+

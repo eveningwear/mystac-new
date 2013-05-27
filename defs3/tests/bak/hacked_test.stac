@@ -1,0 +1,35 @@
+{
+  :id => :stac_mix_hacked_test,
+  :description => "small test mix for debugging of STAC",
+
+  :test_mixes =>
+  [
+    {
+      :count => 40,
+      :test_mix =>
+      [
+        { :fraction  => 20, :scn_mix => [ &USR_SCN_spiked_app(:stac_app_sinatra),
+                                        &USR_SCN_spiked_app(:stac_app_sinatra),
+                                        &USR_SCN_no_enduser(:stac_app_sinatra),
+                                        &USR_SCN_rare_use(:stac_app_sinatra)
+                                      ] },
+
+        { :fraction  => 10, :scn_mix => [ &USR_SCN_steady_growth(:stac_app_sinatra) ] },
+        { :fraction  => 30, :scn_mix => [ &USR_SCN_abandoned(:stac_app_sinatra) ] },
+        { :fraction  => 40, :scn_mix => [ &USR_SCN_rare_use(:stac_app_sinatra) ] }
+      ]
+    },
+
+    {
+      :count => 60,
+      :test_mix =>
+      [
+        { :fraction  => 20, :scn_mix => [ &USR_SCN_spiked_app(:stac_app_sinatra),
+                                        &USR_SCN_spiked_app(:stac_app_sinatra) ] },
+        { :fraction  => 10, :scn_mix => [ &USR_SCN_steady_growth(:stac_app_sinatra) ] },
+        { :fraction  => 70, :scn_mix => [ &USR_SCN_abandoned(:stac_app_sinatra)] }
+      ]
+    },
+  ]
+}
+

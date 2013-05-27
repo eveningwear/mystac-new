@@ -1,0 +1,17 @@
+{
+  :id => :stac_mix_1200_users_and_apps_test,
+  :description => "create 1200 users with 1 app each",
+
+  :test_mixes =>
+  [
+    {
+      :count => 1200,
+      :test_mix =>
+      [
+        { :fraction  => 50, :scn_mix => [ &USR_SCN_no_enduser(:stac_app_sinatra) ] },
+        { :fraction  => 50, :scn_mix => [ &USR_SCN_no_enduser(:stac_app_node) ] }
+      ]
+    }
+  ]
+}
+

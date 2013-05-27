@@ -1,0 +1,11 @@
+{
+    :id => :stac_usr_db_queries,
+    :description => "issue queries against a DB app",
+
+    :usr_actions =>
+    [
+       { :fraction => 90, :usr_action => :http_get, :url => "/db/query"  },
+       { :fraction =>  8, :usr_action => :http_get, :url => "/db/update" },
+       { :fraction =>  2, :usr_action => :http_put, :url => "/db/create" }
+    ]
+}

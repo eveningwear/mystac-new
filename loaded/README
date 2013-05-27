@@ -1,0 +1,139 @@
+A simple load test framwork.
+
+usage: load_runner.rb [OPTIONS] loadfile.rb
+    -u, --users [ARG]                number of users
+    -i, --instances [ARG]            number of instances
+    -x, --execute                    execute test plan
+    -h, --help                       Help
+
+to run example.
+
+sila[~/repo/stac/loaded]./load_runner.rb simple_load.rb 
+setting up user test0@test.com
+vmc register --email test0@test.com --passwd test
+Starting run..
+started worker with pid: 75305
+vmc -u test0@test.com push  test_app_0  --path /Users/talg/repo/stac/loaded/bar  --url test_app_0.b29.me  --mem 128M 
+ab -t 2  -n 30  -c 5 http://test_app_0.b29.me/
+vmc -u test0@test.com instances  test_app_0  10 
+ab -t 2  -n 60  -c 10 http://test_app_0.b29.me/
+vmc -u test0@test.com delete  test_app_0 
+Run complete...
+removing user test0@test.com
+vmc unregister test0@test.com
+
+to execute example.
+
+
+ila[~/repo/stac/loaded]./load_runner.rb -x simple_load.rb
+setting up user test0@test.com
+vmc register --email test0@test.com --passwd test
+Registration completed
+Starting run..
+started worker with pid: 75568
+vmc -u test0@test.com push  test_app_0  --path /Users/talg/repo/stac/loaded/bar  --url test_app_0.b29.me  --mem 128M 
+Simple Sinatra application detected in bar.rb.
+Uploading Application Information.
+Uploading Application.
+
+Uploaded Application 'test_app_0' (0K).
+Push completed.
+Trying to start Application: 'test_app_0'.
+...
+Application 'test_app_0' started.
+ab -t 2  -n 30  -c 5 http://test_app_0.b29.me/
+This is ApacheBench, Version 2.3 <$Revision: 655654 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking test_app_0.b29.me (be patient).....done
+
+
+Server Software:        
+Server Hostname:        test_app_0.b29.me
+Server Port:            80
+
+Document Path:          /
+Document Length:        27 bytes
+
+Concurrency Level:      5
+Time taken for tests:   0.126 seconds
+Complete requests:      30
+Failed requests:        0
+Write errors:           0
+Total transferred:      4830 bytes
+HTML transferred:       810 bytes
+Requests per second:    238.01 [#/sec] (mean)
+Time per request:       21.007 [ms] (mean)
+Time per request:       4.201 [ms] (mean, across all concurrent requests)
+Transfer rate:          37.42 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    0   0.1      0       0
+Processing:     5    9  16.7      6      97
+Waiting:        3    4   0.8      4       6
+Total:          5    9  16.7      6      97
+
+Percentage of the requests served within a certain time (ms)
+  50%      6
+  66%      6
+  75%      7
+  80%      7
+  90%      7
+  95%      7
+  98%     97
+  99%     97
+ 100%     97 (longest request)
+vmc -u test0@test.com instances  test_app_0  10 
+Scaled 'test_app_0' up to 10 instances.
+ab -t 2  -n 60  -c 10 http://test_app_0.b29.me/
+This is ApacheBench, Version 2.3 <$Revision: 655654 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking test_app_0.b29.me (be patient).....done
+
+
+Server Software:        
+Server Hostname:        test_app_0.b29.me
+Server Port:            80
+
+Document Path:          /
+Document Length:        27 bytes
+
+Concurrency Level:      10
+Time taken for tests:   0.179 seconds
+Complete requests:      60
+Failed requests:        0
+Write errors:           0
+Total transferred:      9660 bytes
+HTML transferred:       1620 bytes
+Requests per second:    335.03 [#/sec] (mean)
+Time per request:       29.849 [ms] (mean)
+Time per request:       2.985 [ms] (mean, across all concurrent requests)
+Transfer rate:          52.67 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    0   0.2      0       1
+Processing:     7   16  14.4     10      96
+Waiting:        5   11   9.6      7      33
+Total:          7   16  14.4     10      96
+
+Percentage of the requests served within a certain time (ms)
+  50%     10
+  66%     11
+  75%     13
+  80%     16
+  90%     36
+  95%     36
+  98%     37
+  99%     96
+ 100%     96 (longest request)
+vmc -u test0@test.com delete  test_app_0 
+Application 'test_app_0' deleted.
+Run complete...
+removing user test0@test.com
+vmc unregister test0@test.com
+

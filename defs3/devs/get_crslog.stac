@@ -1,0 +1,11 @@
+{
+    :id => :stac_dev_get_crslog,
+    :description => "dev asks for a single instance's crash logs",
+
+    # Note: a negative :inst_num value means the instance is chosen randomly
+    :dev_actions => [
+                  { :dev_action => :VMC_CRSLOGS, :args => { :app_name => &APPNAME,
+                                                            :inst_num => &INSTNUM } }
+                ]
+}
+

@@ -1,0 +1,12 @@
+{
+  :id => :stac_mix_tiny_node_test,
+  :description => "tiny test mix with 1 user / scenario",
+
+  :test_mixes =>
+  [
+    {
+      :count => 1, :test_mix => [ { :scn_mix => [ &USR_SCN_short_life(:stac_app_node) ] } ]
+    }
+  ]
+}
+

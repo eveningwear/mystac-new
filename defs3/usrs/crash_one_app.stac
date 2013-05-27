@@ -1,0 +1,9 @@
+{
+    :id => :stac_usr_crash_one_app,
+    :description => "issue a request to an app's /crash URL",
+
+    :usr_actions =>
+    [
+      { :usr_action => :http_get, :url => "/crash", :duration => 1 }
+    ]
+}

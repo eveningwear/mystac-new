@@ -1,0 +1,10 @@
+{
+    :id => :stac_app_spring,
+    :description => "rails app designed for STAC testing",
+
+    :app_dir  => "apps/springapp",
+    :app_fmwk => "spring_web/1.0",
+    :app_mem  => "128M",
+    :app_war  => "stac-springapp.war"
+}
+

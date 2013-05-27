@@ -1,0 +1,10 @@
+{
+    :id => :stac_dev_check_health,
+    :description => "make sure the given app is running as expected",
+
+    :dev_actions =>
+    [
+      { :dev_action => :VMC_CHK_APP, :args => { :app_name => &APPNAME } }
+    ]
+}
+

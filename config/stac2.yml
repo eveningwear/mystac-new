@@ -1,0 +1,15 @@
+---
+status_port: 8088
+log_level: DEBUG
+thread_count: 2
+__log_file: d:/tmp/cloudfoundry/stac.log
+pid: d:/tmp/cloudfoundry/stac.pid
+http_log_dir: d:/tmp/cloudfoundry/stac_logs
+clock_jitter: 20
+update_freq: 10
+def_dirs: [ "defs/apps", "defs/devs", "defs/usrs", "defs/scns", "defs/tests" ]
+def_dirs3: [ "defs3/apps", "defs3/devs", "defs3/usrs", "defs3/scns", "defs3/tests" ]
+ac_admin_user: "dev@cloudfoundry.org"
+ac_admin_pass: "goodluck"
+max_runtime: 30
+target_AC: api.vcap.me

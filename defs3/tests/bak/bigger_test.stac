@@ -1,0 +1,36 @@
+{
+  :id => :stac_mix_bigger_test,
+  :description => "slightly bigger test mix with a few hundred users (ruby + java)",
+
+  :test_mixes =>
+  [
+    {
+      :count => 600,
+      :test_mix =>
+      [
+        { :fraction  => 20, :scn_mix => [ &USR_SCN_spiked_app(:stac_app_sinatra),
+                                        &USR_SCN_spiked_app(:stac_app_rails),
+                                        &USR_SCN_no_enduser(:stac_app_rails),
+                                        &USR_SCN_rare_use(:stac_app_sinatra)
+                                      ] },
+
+        { :fraction  => 10, :scn_mix => [ &USR_SCN_steady_growth(:stac_app_spring) ] },
+        { :fraction  => 30, :scn_mix => [ &USR_SCN_abandoned(:stac_app_rails) ] },
+        { :fraction  => 40, :scn_mix => [ &USR_SCN_rare_use(:stac_app_sinatra) ] }
+      ]
+    },
+
+    {
+      :count => 900,
+      :test_mix =>
+      [
+        { :fraction  => 10, :scn_mix => [ &USR_SCN_spiked_app(:stac_app_sinatra),
+                                        &USR_SCN_spiked_app(:stac_app_spring) ] },
+        { :fraction  => 10, :scn_mix => [ &USR_SCN_steady_growth(:stac_app_rails) ] },
+        { :fraction  => 30, :scn_mix => [ &USR_SCN_steady_db(:stac_app_dbrails) ] },
+        { :fraction  => 50, :scn_mix => [ &USR_SCN_abandoned(:stac_app_sinatra)] }
+      ]
+    },
+  ]
+}
+

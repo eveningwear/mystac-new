@@ -1,0 +1,1 @@
+ruby stac2.rb -rtiny_test api.vcap.me --ac_admin_user=dev@cloudfoundry.org --ac_admin_pass=goodluck

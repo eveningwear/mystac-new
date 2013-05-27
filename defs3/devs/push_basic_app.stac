@@ -1,0 +1,11 @@
+{
+  :id => :stac_dev_push_basic_app,
+  :description => "dev pushes app with one instance",
+
+  :dev_actions => 
+  [
+    { :dev_action => :VMC_PUSH_APP, :args => { :app_def   => &APPDEF,
+                                               :app_name  => &APPNAME,
+                                               :app_insts => &APPINSTS } }
+  ]
+}

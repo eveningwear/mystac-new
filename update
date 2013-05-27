@@ -1,0 +1,5 @@
+#!/bin/bash -x
+
+git checkout --track origin/grinderstac
+git submodule update --init
+cd grinder-stac/agent; ./build.sh; make;

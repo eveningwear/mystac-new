@@ -1,0 +1,12 @@
+{
+  :id => :stac_mix_simple_sinatra,
+  :description => "tiny test mix with 1 user / scenario",
+
+  :test_mixes =>
+  [
+    {
+      :count => 2, :httpload => 100, :test_mix => [ { :scn_mix => [ &USR_SCN_short_life(:simple_sinatra_sinatra) ] } ]
+    }
+  ]
+}
+

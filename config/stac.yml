@@ -1,0 +1,12 @@
+---
+status_port: 8088
+log_level: DEBUG
+thread_count: 1
+log_file: d:/tmp/cloudfoundry/stac.log
+pid: d:/tmp/cloudfoundry/stac.pid
+http_log_dir: d:/tmp/cloudfoundry/stac_logs
+clock_jitter: 20
+update_freq: 10
+def_dirs: [ "defs/apps", "defs/devs", "defs/uses", "defs/scns", "defs/tests" ]
+ac_admin_user: "foobar@vmware.com"
+ac_admin_pass: "vmw@re"

@@ -1,0 +1,36 @@
+#!/usr/bin/ruby -w
+require 'fileutils'
+include FileUtils
+
+CORE_PATH = "../../../core/"
+vcap = File.expand_path(CORE_PATH + "bin/vcap_system", __FILE__)
+reset_node = File.expand_path(CORE_PATH + "services/mysql/bin/reset_node", __FILE__)
+rake_path =  File.expand_path(CORE_PATH + "tests", __FILE__)
+register_admin =  File.expand_path("../register_admin.sh", __FILE__)
+
+puts "shutting down vcap.."
+system(vcap + ' stop')
+
+puts "==="
+
+puts "reseting CC database.."
+Dir.chdir rake_path do
+    system 'rake load:reset_db'
+end
+
+puts "==="
+
+puts "reseting mysql service"
+system(reset_node)
+
+puts "==="
+
+puts "starting vcap.."
+system(vcap + ' start')
+
+puts "==="
+sleep 2
+
+puts "setting up admin user"
+system(register_admin)
+

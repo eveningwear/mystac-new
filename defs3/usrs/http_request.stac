@@ -1,0 +1,9 @@
+{
+    :id => :stac_usr_simple_http_request,
+    :description => "simple http request",
+
+    :usr_actions =>
+    [
+       { :usr_action => :http_get, :url => "/" },
+    ]
+}

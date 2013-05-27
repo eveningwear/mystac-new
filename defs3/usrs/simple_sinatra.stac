@@ -1,0 +1,15 @@
+{
+    :id => :stac_usr_simple_sinatra,
+    :description => "basic sinatra app usage sequence",
+
+    :usr_actions =>
+    [
+       { :fraction => 20, :usr_action => :http_get, :url => "/" },
+
+       { :fraction => 70, :usr_action => :http_get, :url => "/data/[VALUE]", :rndval_min => 256,
+                                                                         :rndval_max => 4096 },
+
+       { :fraction => 10, :usr_action => :http_put, :url => "/data",         :rnddsz_min =>  16,
+                                                                         :rnddsz_max => 1024 }
+    ]
+}

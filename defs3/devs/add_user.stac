@@ -1,0 +1,9 @@
+{
+    :id => :stac_dev_add_user,
+    :description => "add dev user",
+
+    :dev_actions => [
+                  { :dev_action => :VMC_ADD_USER, :args => { :user_name => &USERNAME, :password => &PASSWORD } }
+                ]
+}
+

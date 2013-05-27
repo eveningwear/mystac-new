@@ -1,0 +1,10 @@
+{
+    :id => :stac_app_sinatra,
+    :description => "sinatra app designed for STAC testing",
+
+    :app_dir  => "apps/sinapp",
+    :app_fmwk => "http://b20nine.com/unknown",
+    :app_exec => "ruby simple.rb",
+    :app_mem  => "64M",
+    :app_crash => :random,
+}

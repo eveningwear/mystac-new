@@ -1,0 +1,28 @@
+{
+  :id => :stac_mix_really_small_test,
+  :description => "very small test mix with a couple of users (all of them doing very little)",
+
+  :test_mixes =>
+  [
+    {
+      :count => 10,
+      :test_mix =>
+      [
+########{ :fraction  => 60, :scn_mix => [ &USR_SCN_spiked_app(:stac_app_java_hello_world) ] },
+        { :fraction  => 60, :scn_mix => [ &USR_SCN_spiked_app(:stac_app_sinatra) ] },
+########{ :fraction  => 40, :scn_mix => [ &USR_SCN_steady_growth(:stac_app_tiny_java) ] },
+        { :fraction  => 40, :scn_mix => [ &USR_SCN_steady_growth(:stac_app_sinatra) ] },
+      ]
+    },
+
+    {
+      :count => 20,
+      :test_mix =>
+      [
+        { :fraction  => 80, :scn_mix => [ &USR_SCN_short_life(:stac_app_sinatra) ] },
+        { :fraction  => 20, :scn_mix => [ &USR_SCN_spiked_app(:stac_app_sinatra)] }
+      ]
+    },
+  ]
+}
+

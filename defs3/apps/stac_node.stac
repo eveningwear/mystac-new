@@ -1,0 +1,10 @@
+{
+    :id => :stac_app_node,
+    :description => "node app designed for STAC testing",
+
+    :app_dir  => "apps/nodeapp",
+    :app_fmwk => "http://b20nine.com/unknown",
+    :app_exec => "node app.js",
+    :app_mem  => "64M",
+    :app_crash => :random
+}

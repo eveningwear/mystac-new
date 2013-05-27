@@ -1,0 +1,12 @@
+{
+    :id => :stac_dev_get_applogs_rnd,
+    :description => "dev asks for a randomized number of app logs",
+
+    :dev_actions => [
+                  { :dev_action => :VMC_APPLOGS, :args => { :app_name => &APPNAME,
+                                                            :random   => true,
+                                                            :inst_min => &INSTMIN,
+                                                            :inst_max => &INSTMAX } }
+                ]
+}
+

@@ -1,0 +1,13 @@
+{
+  :id => :stac_scn_simple_http_load,
+  :description => "simple http load",
+
+  :scn_actions =>
+  [
+    # set defaults for the application name, definition and initial instance count
+    { :act_id => :stac_usr_simple_http_request, :http_load => "$end_user_count|10",
+                                                               :http_ms_pause => "$think_time|5",
+                                                               :http_duration => "60",
+                                                               :duration => "$usr_duration|60" },
+  ]
+}

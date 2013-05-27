@@ -1,0 +1,13 @@
+{
+  :id => :stac_mix_hack,
+  :description => "test mix for random hacking",
+
+  :test_mixes =>
+  [
+    {
+####  :count => 1, :test_mix => [ { :scn_mix => [ &USR_SCN_hack(:stac_app_sinatra) ] } ]
+      :count => 1, :test_mix => [ { :scn_mix => [ &USR_SCN_simple_db(:stac_app_dbrails) ] } ]
+    }
+  ]
+}
+

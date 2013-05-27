@@ -1,0 +1,31 @@
+Usage: stac [OPTIONS] ac_address
+    -c, --config FILE                Configuration File
+    -l, --logfile FILE               Log file (default=stdout)
+    -L, --log_level LVL              Logging level
+    -d, --defdir PATH                Add definition directory
+    -f, --defile FILE                Add definition file
+    -i, --identifier UNIQUE_ID       Set user/app name prefix to allow multiple STAC's to coexist
+    -j, --clock_jitter PCT           Set clock jitter in percent (0..100)
+    -w, --update_freq SECS           Time between warm'n'fuzzy updates in seconds
+    -m, --max_runtime SECS           Cap running time (seconds)
+    -p, --port PORTNUM               Change status port number
+    -t, --thin_logging               Enable Thin logging
+    -u, --dry_run                    Pretend to execute test plan.
+    -v, --verbose                    Display extra detail (mostly for debugging)
+    -q, --quiet                      Minimal console output
+    -n, --newgen                     Use newgen CLI interfaces
+    -x, --extra_detail               Log more detail about app crashes and such
+    -s, --equalize_scen_time         Equalize scenario running time
+    -S, --stagger_scen               Stagger scenarios
+    -e, --pause_at_end               Pause before cleanup to enable inspection
+    -k, --log_end_stat               Log detailed ending state of the system
+    -r, --run_mix MIXNAME            Run specified test mix
+        --ac_admin_user USERNAME     Set AppCloud admin user login
+        --ac_admin_pass PASSWORD     Set AppCloud admin user password
+        --time-scale SCALE           Scale all time duration values
+        --thread-count NUM           Number of executor threads
+        --no_http_uses               Don't issue HTTP use actions
+        --nats_server HOST           Specify user:pass@host:port of nats server
+        --health_intvl SECS          How often to log health stats (0=disabled)
+    -U, --log_resource_use SECS      Log our resource usage with given frequency
+    -h, --help                       Help

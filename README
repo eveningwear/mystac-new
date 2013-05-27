@@ -1,0 +1,403 @@
+STAC defaults to reading options from config/stac.yml, this can be changed via
+the command line option -c (similar to other AC style components). The list of
+available command line options can be seen by invoking STAC with -h (note, BTW,
+that the basic rule is that anything that can be set in the config file can
+also be set from the command line).
+
+There are several things in the default config file (in the git repo) that you
+should be aware of:
+
+    log_file: /tmp/stac.log
+
+        When the log file is set to a "real" file, all logging messages will
+        go into that file. This is normally a good thing but if you want to
+        see logged messages immediately (on the console, as STAC is running),
+        set the log file name to a blank string.
+
+    update_freq: 10
+
+        This option sets the number of seconds between when update messages
+        Are logged (and displayed on stdout). These messages report the number
+        Of actions that have been attempted (and how many failed), stats about
+       HTTP use, and so on.
+
+    def_dirs: [ "defs/apps", "defs/devs", "defs/uses", "defs/scns", "defs/tests" ]
+
+        This tells STAC to read all the files that match *.stac in the specified
+        sub-directories. These files provide definitions of things like apps,
+        developer actions, and so on; more on these below. What's important to
+        note is that with the options above, STAC will read - and process - all
+        of the matching *.stac files, whether they're needed or not. Also note
+        that the directory structure is purely convention / convenience - the
+        only thing that really matters is what's inside these files, not where
+        they are located.
+
+    ac_admin_user: "foobar@vmware.com"
+    ac_admin_pass: "vmw@re"
+
+        Since STAC needs to be able to create arbitrary numbers of users, it
+        needs to log into AppCloud as an admin user. An "admin" user in AC is
+        basically any user listed under "admins: [...]" in the cloud controller
+        config file; with BOSH there are currently a few hard-wired admin user
+        names, but your exact set may wary. The important thing is that the
+        user/e-mail and password specified (in the config file or on he command
+        line) must exist (i.e. be registered with AC) and be configured in the
+        CC as an admin user; otherwise, STAC will fail quite miserably.
+
+Please take a look at your copy of config/stac.yml and make sure all of the
+defaults / values in there look reasonable; anything that isn't right, please
+either fix by modifying the config file or overriding values via options on the
+command line.
+
+The only required thing on any STAC command line is the target URL for the
+AppCloud instance to target - for example:
+
+    $   ./stac.rb api.appcloud0x.dev.mozycloud.com
+
+Usually a bit more is required, though, because you need to tell STAC what
+test you want it to run against the specified AC instance. In order to explain
+that, though, we need to explain a bit about the *.stac files mentioned above.
+
+Without getting into the details of the STAC definition files (for that, see
+below), the basic idea is that these definition files specify what apps and
+actions are available, and they also give specifications for test runs. When
+running STAC, you need to tell it which "test mix" (defined in more detail
+below) to execute - if you don't specify which test mix to run, STAC will show
+you all of the available test mixes and then stop.
+
+Assuming you've cloned the stac depot and didn't change the directories
+where STAC looks for definition files, if you run STAC without specifying
+the test mix you want to run via the .-r. command line option, STAC will show
+you all the test mixes that are available . i.e. you may see something like
+the following:
+
+    $   ./stac.rb api.vcap.me
+
+    ERROR: please select a test mix to run via command-line options;
+           here are the available test mixes that have been defined:
+
+           small_test
+           500_users_and_apps_test
+           tiny_test
+           big_test
+           small_rails
+           bigger_test
+           1000_users_test
+           really_small_test
+           1000_users_and_apps_test
+           100_short_sinatra_test
+           single_heavy_use_test
+           double_heavy_use_test
+
+At first it's best to pick a test mix that is short and sweet, for example
+the "tiny_test" is an all-time favorite. Thus, with the default config file
+and no other options, here is the simplest way to execute a STAC run:
+
+    $   ./stac.rb -rtiny_test api.vcap.me
+
+What the above will do is execute the "tiny_test" test mix against AppCloud
+at the given URL, with the other options defined by the config file or by
+defaults built into STAC.
+
+Note, BTW, that many command-line options have both a single-letter short
+form and a more verbose double-hyphen form; except for .r, we'll always use
+the longer forms in this document.
+
+The descriptions of all the command line / config file options can be seen
+by running STAC with the -h option, but here is an example of a slightly
+elaborate command line along with detailed explanations of the options:
+
+    ./stac.rb -rbigger_test                                       \
+              --ac_admin_user=vadim@spivak.net                    \
+              --ac_admin_pass=vmw@re                              \
+              --nats_server=nats:z2bfss5w22@171.31.188.11:4222    \
+              --health_intvl=45                                   \
+              --update_freq=60                                    \
+              --log_resource_use=30                               \
+              --time-scale=0.1                                    \
+              --max_runtime=600                                   \
+              --thread-count=16                                   \
+              api.vcap.me
+
+Explanation of the command-line options employed above:
+
+    -rbigger_test
+
+        -r specifies which test mix to run ("bigger_test" is quite big, BTW).
+
+    --ac_admin_user=vadim@spivak.net
+    --ac_admin_pass=vmw@re
+
+        Override the config file's admin user name/password.
+
+    --nats_server=nats:z2bfss5w22@171.31.188.11:4222
+
+        Specifies the user:pass and host:port of the NATS server; you can
+        get this information from your BOSH manifest or - if you are running
+        locally - this is usually localhost:4222 or something similar. The
+        only reason you want to use this option is to enable health logging,
+        BTW - without a NATS server connection there is now way STAC is able
+        to record health info.
+
+    --health_intvl=45
+
+        Assuming --nats_server is correctly specified, this will tell STAC
+        to listen to NATS traffic and to record health information (i.e. the
+        values from /varz and /healthz for all the AC components) in the log
+        every 45 seconds.
+
+    --update_freq=60
+
+        Report overall status progress (log and console) every 60 seconds.
+
+    --log_resource_use=30
+
+        Write resource usage of STAC itself (memory / cpu) into the log file
+        every 30 seconds.
+
+    --time-scale=0.1
+
+        The number given to this option is used to simply multiply the
+        :duration values on any HTTP "use" actions that are executed during
+        the run; in this case such duration values would be divided by 10,
+        which can be handy to run through a scenario quickly or something
+        similar.
+
+    --max_runtime=600
+
+        It is very important to always use this option, whenever possible;
+        it sets a time limit (in seconds) on how long the overall test will
+        run, and the reason it's important is that many of the test mixes
+        include "use" actions with infinite duration (this is so that these
+        actions run throughout the entire test run, irregardless of how long
+        it is), and if you don't specify a time limit such tests will never
+        terminate on their own (you can ctrl-C or kill a STAC run, but that
+        is somewhat unreliable and frankly it is frowned upon).
+
+    --thread-count=16
+
+        The number of worker threads STAC should use to execute actions. The
+        reason you want to use a generous number is that when there are lots
+        and lots of developers and other things being simulated in parallel,
+        you want enough horsepower in STAC to issue lots of actions all at
+        once to really stress the victim system. The threading model of STAC
+        is relatively simple, BTW - once an execution plan is formulated from
+        the test mix given on the command line and other values, the threads
+        in STAC simply pull actions from the queue - based on a clock - and
+        execute them when they're ready. Note in particular that all actions
+        in a given scenario will always execute serially (e.g. if a "use"
+        action follows a "dev" action, the "use" action will not commence
+        until the "dev" action has finished, no matter how long this takes)
+        but because all of the users and scenarios in a given test mix are
+        run in parallel, there can be zillions of "dev" or "use" actions
+        ready to be executed at any point in time. Of course there is a
+        limit to how many threads it makes sense to use before things like
+        context switching overhead starts bogging things down, but the
+        optimal number heavily depends on your Ruby runtime and how much
+        hardware horsepower you can / want to give STAC, etc. Just use some
+        common sense and experiment, OK?
+
+One other option is worth mentioning - in order to make it possible to run
+more than instance of STAC against one target, the -i / --identifier option
+can be used to add a prefix to all user and application names that STAC
+creates.
+
+------------------------------------------------------------------------------
+
+The *.stac definition files are basically Ruby hash values that define the
+various aspects of tests. These files can use values (sometimes referred to
+as "substitution arguments") that are defined elsewhere, and can also define
+default values. An example would be a typical scenario definition which will
+normally provide defaults for the application name and definition to be used
+as well as the initial instance count, but all of these default values can -
+and in the case of the app name and definition almost always are - overridden
+with the desired value (in the case of a scenario these values would be set
+in the "test mix" definition that invokes the scenario, for example). To make
+it clear when external arguments are being referenced in a definition, the
+place where an argument value is to be substituted always looks like &ARG
+where ARG is the uppercased name of the argument.
+
+There are 5 different types of definition files and for convenience these
+are currently stored in separate directories but note that the location of
+the file that contains a definition is not important, only the contents; it
+is purely the :id tag value in the definition that indicates the type - it
+must be of the form "stac_typ_basename" where "typ" is one of the 3-letter
+type abbreviations (app / dev / use / inf / scn / mix) and "basename" is
+the simple name of the entity being defined.
+
+------------------------------------------------------------------------------
+
+The "app" files indicate what applications are available; that is, for a
+given app, its definition file specifies the directory where the application
+bits are found, what framework the app uses, how much RAM to ask for by
+default, etc. Here is a typical example of an app definition file:
+
+{
+    :id => :stac_app_sinatra,
+    :description => "sinatra app designed for STAC testing",
+
+    :app_dir  => "apps/sinapp",
+    :app_fmwk => "http://b20nine.com/unknown",
+    :app_exec => "ruby simple.rb",
+    :app_mem  => "64M",
+    :app_crash => :explicit,
+}
+
+The :id tag gives the type and the name of the entity being defined - in this
+case an "app" is being defined and its "base" name is "sinatra". For now the
+:description tags are ignored but they're useful as documentation if nothing
+else so please try to include them in new definitions (and update them when
+definitions change). The various :app_xxx tags provide defaults for the various
+values that need to be specified when an application is pushed; if an app needs
+to have services provisioned for it when its pushed, those would be listed in
+the app definition as well (see the dbrails app definition for an example of
+this). Finally, the :app_crash tag indicates whether the app is expected to
+crash, and if so how (for example, some apps respond to a HTTP request against
+a /crash URL, etc).
+
+------------------------------------------------------------------------------
+
+The "dev" action definition files basically provide one or more "vmc" style
+actions such as "push app", "change instance count", etc. Here is a typical
+example of a "dev" definition:
+
+{
+    :id => :stac_dev_get_crslogs_rnd,
+    :description => "dev asks for a randomized number of crash logs",
+
+    :actions => [
+                  { :vmc_action => :VMC_CRSLOGS, :args => { :app_name => &APP_NAME,
+                                                            :inst_min => &INST_MIN,
+                                                            :inst_max => &INST_MAX } }
+                ]
+}
+
+As usual, :id specifies that this is a "dev" definition, and :description is
+currently ignored. The :actions tag should be set to an array of hashes that
+indicate what "vmc" actions to issue; currently most of the "dev" actions
+only have one "vmc" command each, but there is no limit on how many commands
+can be strung together. Each entry in the :actions value should be a hash that
+includes a :vmc_action tag to indicate the "vmc" command, and any arguments
+that should be passed to that command. In the example above we see that all of
+the arguments for the "VMC_CRSLOGS" command reference substitution arguments
+that need to be defined by whoever invokes this "dev" action. A typical way
+of invoking the above "dev" action might look like the following:
+
+  { :stac_dev_get_crslogs_rnd=>nil, :app_name => &APPNAME,
+                                    :inst_min => -5, :inst_max => -10 }
+
+The value given to the :app_name tag will be substituted anytime &APP_NAME is
+used in the "dev" definition, etc.
+
+------------------------------------------------------------------------------
+
+The "use" definition files specify sequences of HTTP requests to be issued
+against a given app; i.e. these are meant to simulate end-user traffic. Here
+is a very simple example of a "use" definition:
+
+{
+  :id => :stac_use_crash_one_app,
+  :description => "issue a request to an app's /crash URL",
+
+  :use_actions =>
+  [
+    { :action => :http_get, :url => "/crash", :duration => 1 }
+  ]
+}
+
+As should be pretty obvious, referencing this "use" definition in a scenario
+would cause an HTTP get to be sent against the given app's "/crash" URL for
+one second.
+
+The :use_actions tag should be set to an array listing the "use" actions to be
+performed against the app; each entry in the array can be either a "simple"
+HTTP action like above or it can be a probabilistic mix of actions like the
+following example:
+
+{
+  :id => :stac_use_simple_sinatra,
+  :description => "basic sinatra app usage sequence",
+
+  :use_actions =>
+  [
+    {
+      :use_mix =>
+      [
+        { :fraction => 20, :action => :http_get, :url => "/" },
+
+        { :fraction => 70, :action => :http_get, :url => "/data/[VALUE]", :rndval_min => 256,
+                                                                          :rndval_max => 4096 },
+
+        { :fraction => 10, :action => :http_put, :url => "/data",         :rnddsz_min =>  16,
+                                                                          :rnddsz_max => 1024 },
+      ]
+    },
+  ]
+}
+
+In the above example we define a set of actions - along with frequencies - to
+be applied in semi-random manner; that is, the frequency of each entry in the
+mix will be roughly the percentage specified by the :fraction tag. Thus, for
+example, an action with :fraction => 20 will happen about 20% of the time and
+so on; needless to say the :fraction values in a given :use_mix array have to
+add up to 100% or an error is issued.
+
+------------------------------------------------------------------------------
+
+The "scenario" files define sequences of actions (both "developer" and "end-
+user") along with timing and other parameters that can be applied to one or
+more applications. Scenario files usually provide defaults as far as what app
+to use etc, and these can be - and normally always are - overridden (see the
+"test mix" explanation for examples). A simple scenario definition may ask to
+push an application, issue some HTTP requests against it, change the app's
+instance count, issue some more HTTP traffic, and finally delete the app. Any
+of these actions can specify :duration values (in seconds), and sequences of
+actions can be repeated via a simple "repeat begin" / "repeat end" construct.
+
+Here is a simple example of a scenario definition that pushes an app and then
+runs some HTTP use against the app as well as tweaks the instance count of the
+application:
+
+{
+  :id => :stac_scn_example_scenario,
+  :description => "example for illustration only",
+
+  :actions =>
+  [
+    # set defaults for the application name, definition and initial instance count
+    { :stac_inf_def_state=>nil, :var => &APPNAME , :val => "example_app" },
+    { :stac_inf_def_state=>nil, :var => &APPDEF  , :val => :stac_app_sinatra },
+    { :stac_inf_def_state=>nil, :var => &APPINSTS, :val => 5 },
+
+    # dev pushes a simple app
+    { :stac_dev_push_basic_app=>nil, :app_def  => &APPDEF,
+                                     :app_name => &APPNAME,
+                                     :app_insts=> &APPINSTS },
+
+    # app experiences varying (and growing) levels of HTTP load
+    { :stac_use_simple_sinatra=>nil, :app_name => &APPNAME, :http_load =>  1, :duration => 10 },
+    { :stac_use_simple_sinatra=>nil, :app_name => &APPNAME, :http_load => 30, :duration => 10 },
+    { :stac_use_simple_sinatra=>nil, :app_name => &APPNAME, :http_load => 99, :duration => 10 },
+
+    # dev increases instance count
+    { :stac_dev_change_instcnt=>nil, :app_name => &APPNAME, :count => +5 },
+
+    ...
+    ...
+
+}
+
+In the above example an application is pushed (note that the application's name
+and definition and initial instance count are given defaults but typically these
+will all be set by the "test mix" that invokes this scenario); once the app is
+running, it experiences growing HTTP load and so the dev asks for 5 more app
+instances, etc.
+
+------------------------------------------------------------------------------
+
+The "text mix" files are the in a sense the top-level definitions, i.e. when
+STAC is run the user has to select which test mix to run; note that each test
+mix definition can invoke an arbitrary number of scenarios (and all of these
+execute in parallel - as long as enough STAC threads are created, of course).
+
+------------------------------------------------------------------------------

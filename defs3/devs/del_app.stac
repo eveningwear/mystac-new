@@ -1,0 +1,9 @@
+{
+    :id => :stac_dev_del_app,
+    :description => "dev deletes a simple app",
+
+    :dev_actions => [
+                  { :dev_action => :VMC_DEL_APP, :args => { :app_name => &APPNAME } }
+                ]
+}
+

@@ -1,0 +1,8 @@
+{
+    :id => :stac_app_will_not_start,
+    :description => "app that pushes OK but will never start running",
+
+    :app_name  => "will not start",
+    :app_dir   => "apps/will_not_start",
+    :app_crash => :immediate
+}

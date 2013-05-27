@@ -1,0 +1,11 @@
+{
+    :id => :stac_dev_change_instcnt,
+    :description => "dev changes app instance count by COUNT",
+
+    :dev_actions => [
+                  { :dev_action => :VMC_INSTCNT, :args => { :app_name => &APPNAME,
+                                                            :inst_cnt => &COUNT,
+                                                            :rel_icnt => true } }
+                ]
+}
+

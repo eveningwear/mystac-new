@@ -1,0 +1,22 @@
+output logs
+
+http_response.log
+vmc_out.log
+
+
+
+Spec commands.
+
+acts like normal vmc, implictly uses correct users, handles output
+logging.
+
+set_user
+
+vmc command, params...
+
+http_load :url=>'foo.bar.com',:duration=>30
+http_load :url=>'foo.bar.com, :requests=>400, :concurrency=>20
+http_load :urlfile=>'targets',:duration=>20
+
+checking loadfile.
+

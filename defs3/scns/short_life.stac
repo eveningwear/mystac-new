@@ -1,0 +1,26 @@
+{
+  :id => :stac_scn_short_life,
+  :description => "push app, delete app",
+
+  :scn_actions =>
+  [
+    # set defaults for the application name, definition and initial instance count
+    { :act_id => :stac_inf_def_state, :var => &APPNAME , :val => "short_life_app" },
+    { :act_id => :stac_inf_def_state, :var => &APPDEF  , :val => :stac_app_sinatra },
+    { :act_id => :stac_inf_def_state, :var => &APPINSTS, :val => 1 },
+
+    { :act_id => :stac_dev_push_basic_app, :app_def  => &APPDEF,
+                                     	   :app_name => &APPNAME,
+                                           :app_insts=> &APPINSTS, :duration => 1 },
+
+    { :act_id => :stac_usr_simple_sinatra, :app_name => &APPNAME, :http_load => 10,
+                                                                  :http_ms_pause => 10000,
+                                                                  :duration => -60 },
+
+    { :act_id => :stac_dev_check_health,   :app_name => &APPNAME, :duration => 5 },
+
+    { :act_id => :stac_dev_check_health,   :app_name => &APPNAME, :duration => 5 },
+
+    { :act_id => :stac_dev_del_app,        :app_name => &APPNAME }
+  ]
+}

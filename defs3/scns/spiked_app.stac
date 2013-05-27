@@ -1,0 +1,88 @@
+{
+  :id => :stac_scn_spiked_app,
+  :description => "app experiences sudden spike in its use",
+
+  :scn_actions =>
+  [
+    # set defaults for the application name, definition and initial instance count
+    { :act_id => :stac_inf_def_state, :var => &APPNAME , :val => "spiked_app" },
+    { :act_id => :stac_inf_def_state, :var => &APPDEF  , :val => :stac_app_sinatra },
+    { :act_id => :stac_inf_def_state, :var => &APPINSTS, :val => 1 },
+
+    # dev pushes a simple app
+    { :act_id => :stac_dev_push_basic_app,    :app_def  => &APPDEF,
+                                        :app_name => &APPNAME,
+                                        :app_insts=> &APPINSTS,
+                                        :duration => 1 },
+    # load on app gradually escalates
+    { :act_id => :stac_usr_simple_sinatra,    :app_name => &APPNAME, :http_load =>  1, :duration => 20 },
+    { :act_id => :stac_dev_check_health,      :app_name => &APPNAME, :duration  =>  1 },
+    { :act_id => :stac_usr_simple_sinatra,    :app_name => &APPNAME, :http_load =>  5, :duration => 20 },
+    { :act_id => :stac_dev_check_health,      :app_name => &APPNAME, :duration  =>  1 },
+    { :act_id => :stac_usr_simple_sinatra,    :app_name => &APPNAME, :http_load => 99, :duration => 20 },
+
+    # dev bumps instance count in response to demand
+    { :act_id => :stac_dev_change_instcnt,    :app_name => &APPNAME, :count => +5,
+                                        :duration => 1 },
+
+    # dev asks for a few logs
+    { :act_id => :stac_dev_get_applogs_rnd,   :app_name => &APPNAME, :inst_min => 3, :inst_max => 7,
+                                        :duration => 1 },
+
+    # dev replaces original app with a crashing one
+    { :act_id => :stac_dev_update_simple_app, :app_name => &APPNAME, :app_def => :stac_app_crashes_fast,
+                                        :duration => 10 },
+
+    # users still trying to use the app but since it's now broken, use drops off
+    { :act_id => :stac_usr_simple_sinatra,    :app_name => &APPNAME, :http_load => 99, :duration => 10 },
+    { :act_id => :stac_dev_check_health,      :app_name => &APPNAME, :duration  =>  1 },
+    { :act_id => :stac_usr_simple_sinatra,    :app_name => &APPNAME, :http_load => 33, :duration => 10 },
+    { :act_id => :stac_dev_check_health,      :app_name => &APPNAME, :duration  =>  1 },
+
+    # dev grabs crash info and logs from a few semi-random instances of the broken app
+    { :act_id => :stac_dev_crashes,           :app_name => &APPNAME,
+                                        :duration => 1 },
+    { :act_id => :stac_dev_get_crslogs_rnd,   :app_name => &APPNAME, :inst_min => -5, :inst_max => -10,
+                                        :duration => 1 },
+    { :act_id => :stac_dev_get_crslog,        :app_name => &APPNAME, :inst_num => "&INST_CNT(&APPNAME) / -10",
+                                        :duration => 1 },
+
+    { :act_id => :stac_dev_crashes,           :app_name => &APPNAME,
+                                        :duration => 1 },
+    { :act_id => :stac_dev_get_applogs_rnd,   :app_name => &APPNAME, :inst_min => 10, :inst_max => 20,
+                                        :duration => 1 },
+    { :act_id => :stac_dev_get_applog,        :app_name => &APPNAME, :inst_num => -2,
+                                        :duration => 1 },
+
+    # dev deploys a fixed app, users notice and start banging on it again
+    { :act_id => :stac_dev_update_simple_app, :app_name => &APPNAME, :app_def => &APPDEF,
+                                        :duration => 1 },
+
+    { :act_id => :stac_dev_change_instcnt,    :app_name => &APPNAME, :count => +10,
+                                        :duration => 1 },
+    { :act_id => :stac_usr_simple_sinatra,    :app_name => &APPNAME, :http_load => 66, :duration => 10 },
+    { :act_id => :stac_dev_check_health,      :app_name => &APPNAME, :duration  =>  1 },
+    { :act_id => :stac_usr_simple_sinatra,    :app_name => &APPNAME, :http_load => 99, :duration => 20 },
+    { :act_id => :stac_dev_check_health,      :app_name => &APPNAME, :duration  =>  1 },
+    { :act_id => :stac_dev_change_instcnt,    :app_name => &APPNAME, :count => +10,
+                                        :duration => 1 },
+    { :act_id => :stac_usr_simple_sinatra,    :app_name => &APPNAME, :http_load => 55, :duration => 20 },
+
+    # dev starts running short on credit to pay for his silly app; reduce instances
+    { :act_id => :stac_dev_change_instcnt,    :app_name => &APPNAME, :count => -15,
+                                        :duration => 1 },
+    { :act_id => :stac_dev_check_health,      :app_name => &APPNAME, :duration  =>  1 },
+
+    { :act_id => :stac_usr_simple_sinatra,    :app_name => &APPNAME, :http_load =>  88, :duration => 20 },
+
+    { :act_id => :stac_dev_check_health,      :app_name => &APPNAME, :duration  =>  1 },
+
+    # word gets out that this app doesn't scale, users leave in droves
+    { :act_id => :stac_usr_simple_sinatra,    :app_name => &APPNAME, :http_load =>  33, :duration => 10 },
+    { :act_id => :stac_dev_check_health,      :app_name => &APPNAME, :duration  =>  1 },
+    { :act_id => :stac_usr_simple_sinatra,    :app_name => &APPNAME, :http_load =>  33, :duration => 10 },
+
+    # dev gives up on the cloud and seeks employment as fast food cook
+    { :act_id => :stac_dev_del_app,           :app_name => &APPNAME }
+  ]
+}

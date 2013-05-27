@@ -1,0 +1,6 @@
+{
+    :id => :stac_usr_universal,
+    :description => "generic app usage placeholder",
+
+    :usr_actions => [ { :usr_action => :http_generic } ]
+}

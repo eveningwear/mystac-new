@@ -1,0 +1,15 @@
+{
+  :id => :stac_scn_no_app,
+  :description => "create a dev, but don't push any apps",
+
+  :no_stop => true,
+
+  :scn_actions =>
+  [
+    # set defaults for the application name, definition and initial instance count
+    { :act_id => :stac_inf_def_state, :var => &APPNAME , :val => "no_enduser_app" },
+    { :act_id => :stac_inf_def_state, :var => &APPDEF  , :val => :stac_app_sinatra },
+    { :act_id => :stac_inf_def_state, :var => &APPINSTS, :val => 1 },
+  ]
+}
+

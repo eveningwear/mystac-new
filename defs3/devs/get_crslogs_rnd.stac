@@ -1,0 +1,10 @@
+{
+    :id => :stac_dev_get_crslogs_rnd,
+    :description => "dev asks for a randomized number of crash logs",
+
+    :dev_actions => [
+                  { :dev_action => :VMC_CRSLOGS, :args => { :app_name => &APPNAME,
+                                                            :inst_min => &INSTMIN,
+                                                            :inst_max => &INSTMAX } }
+                ]
+}

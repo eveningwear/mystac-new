@@ -1,0 +1,12 @@
+{
+  :id => :stac_mix_100_short_sinatra_test,
+  :description => "100 short app scenarios",
+
+  :test_mixes =>
+  [
+    {
+      :count => 100, :test_mix => [ { :scn_mix => [ &USR_SCN_short_life(:stac_app_sinatra) ] } ]
+    }
+  ]
+}
+

@@ -1,0 +1,36 @@
+GEM
+  remote: http://rubygems.org/
+  specs:
+    addressable (2.2.4)
+    algorithms (0.3.0)
+    daemons (1.1.0)
+    em-http-request (0.3.0)
+      addressable (>= 2.0.0)
+      escape_utils
+      eventmachine (>= 0.12.9)
+    escape_utils (0.2.0)
+    eventmachine (0.12.10)
+    httpclient (2.1.7.2)
+    json_pure (1.5.1)
+    rack (1.2.1)
+    rubyzip2 (2.0.2)
+    sinatra (1.1.2)
+      rack (~> 1.1)
+      tilt (~> 1.2)
+    thin (1.2.7)
+      daemons (>= 1.0.9)
+      eventmachine (>= 0.12.6)
+      rack (>= 1.0.0)
+    tilt (1.2.2)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  algorithms
+  em-http-request (>= 0.3.0)
+  httpclient
+  json_pure
+  rubyzip2
+  sinatra (> 1.1.0)
+  thin (> 1.2)

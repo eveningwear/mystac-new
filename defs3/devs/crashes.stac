@@ -1,0 +1,7 @@
+{
+    :id => :stac_dev_crashes,
+    :description => "dev asks to see crashed apps",
+
+    :dev_actions => [ { :dev_action => :VMC_CRASHES, :args => { :app_name => &APPNAME } } ]
+}
+

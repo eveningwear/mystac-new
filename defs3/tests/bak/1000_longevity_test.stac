@@ -1,0 +1,28 @@
+{
+  :id => :stac_mix_1000_longevity_test,
+  :description => "1000 users longevity test",
+
+  :test_mixes =>
+  [
+    # Push apps for all the frameowrks, check them, send each 1 request every 10s for a minute, and then just leave it
+    { :count => 300, :test_mix => [ { :count  => 1, :scn_mix => [ &USR_SCN_hello_world(:stac_app_sinatra) ] } ] },
+    { :count => 100, :test_mix => [ { :count  => 1, :scn_mix => [ &USR_SCN_hello_world(:stac_app_node) ] } ] },
+    { :count => 300, :test_mix => [ { :count  => 1, :scn_mix => [ &USR_SCN_hello_world(:stac_app_rails) ] } ] },
+    { :count => 200, :test_mix => [ { :count  => 1, :scn_mix => [ &USR_SCN_hello_world(:stac_app_spring) ] } ] },
+
+    # Push sinatra, rails, and spring apps, keep bumping their instance counts as growth goes up
+    { :count => 20, :test_mix => [ { :count  => 1, :scn_mix => [ &USR_SCN_steady_growth(:stac_app_sinatra) ] } ] },
+    { :count => 20, :test_mix => [ { :count  => 1, :scn_mix => [ &USR_SCN_steady_growth(:stac_app_rails) ] } ] },
+    { :count => 20, :test_mix => [ { :count  => 1, :scn_mix => [ &USR_SCN_steady_growth(:stac_app_spring) ] } ] },
+
+    # Steady increase of DB usage
+    { :count => 30, :test_mix => [ { :count  => 1, :scn_mix => [ &USR_SCN_steady_db(:stac_app_dbrails) ] } ] },
+
+    # slashdot/dig/redit frontpage type load
+    { :count => 1, :test_mix => [ { :count  => 1, :scn_mix => [ &USR_SCN_spiked_app(:stac_app_sinatra) ] } ] },
+    { :count => 1, :test_mix => [ { :count  => 1, :scn_mix => [ &USR_SCN_spiked_app(:stac_app_node) ] } ] },
+    { :count => 1, :test_mix => [ { :count  => 1, :scn_mix => [ &USR_SCN_spiked_app(:stac_app_spring) ] } ] },
+    { :count => 1, :test_mix => [ { :count  => 1, :scn_mix => [ &USR_SCN_spiked_app(:stac_app_rails) ] } ] },
+  ]
+}
+

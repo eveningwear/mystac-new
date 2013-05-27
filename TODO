@@ -1,0 +1,30 @@
+[#Bugz#]
+
+
+[#Tasks#]
+
+*Get bosh setup
+    -figure out how to use bosh and deploy with it.
+
+*Get story around CCNG
+    -when will it be available.
+    -how do we scale it up
+    -how do we do cleanup
+
+*Get full coverage with test apps
+    -find out what final list of supported stacks is
+    -get variants implemented.
+
+*Measure stac CPU utilization.
+    -every n seconds.
+    -for mac and linux.
+
+*Enhance http load gen, have support for put/post and parameters.
+
+*need better capture of AC component logs
+    - capture only the log entries related to a test run, etc.
+
+*decide what is an http failure and handle it.
+    -if apps are totally shitting out, what to do?
+
+*creating more interesting scenarios

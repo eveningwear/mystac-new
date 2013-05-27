@@ -1,0 +1,8 @@
+{
+    :id => :stac_app_crashes_fast,
+    :description => "app that pushes and starts OK but crashes within a few seconds",
+
+    :app_name  => "crashes fast",
+    :app_dir   => "apps/crashes_fast",
+    :app_crash => :soon
+}

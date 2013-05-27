@@ -1,0 +1,11 @@
+{
+    :id => :stac_app_redisrails,
+    :description => "redis rails app with database features",
+
+    :app_dir  => "apps/redisrails",
+    :app_fmwk => "rails/1.0",
+    :app_mem  => "64M",
+    :app_svcs => [
+                   { :svc_type => "key-value", :svc_vendor => "redis" }
+                 ]
+}
